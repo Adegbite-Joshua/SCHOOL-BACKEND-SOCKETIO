@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "babel-node index.js"
   },
   "keywords": [],
   "author": "Adegbite Joshua",
@@ -15,5 +15,9 @@
     "http": "^0.0.1-security",
     "mongoose": "^8.0.3",
     "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.6",
+    "@babel/preset-env": "^7.23.6"
   }
 }
