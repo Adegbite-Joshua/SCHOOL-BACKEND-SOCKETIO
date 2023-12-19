@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const mongoose = require('mongoose')
 const { socketSendMessage, sendNotification } = require('./controller/socket.controller');
 require('dotenv').config();
 
@@ -14,6 +15,7 @@ const io = new Server(server, {
 });
 
 const PORT = process.env.PORT1;
+const URI = process.env.URI
 
 let onlineUsers = [];    
 
@@ -85,6 +87,14 @@ io.on('connection', (socket)=>{
         console.log(`User with socket id ${socket.id} disconnected`);
         onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
     })
+})
+
+mongoose.connect(URI)
+.then((res)=>{
+    console.log('connected');
+})
+.catch((err)=>{
+    console.log(err);
 })
 
 

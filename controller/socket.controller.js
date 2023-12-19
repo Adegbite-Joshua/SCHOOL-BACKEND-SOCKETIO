@@ -11,7 +11,7 @@ const socketSendMessage = (message)=>{
 }
 
 const sendNotification = (notificationDetails, mongoDbId)=>{
-    notification.findOne({_id: mongoDbId})//   { $inc: { "unread": 1 }, $push: {notifications: notificationDetails} }
+    notification.findOne({_id: mongoDbId}, { $inc: { "unread": 1 }, $push: {notifications: notificationDetails} })
     .then((res)=>{
         console.log(res)
         if(res==null){

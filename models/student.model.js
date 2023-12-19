@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
 
 const studentSchema = new mongoose.Schema({
     firstName: {required: true, type:String},
@@ -64,30 +63,6 @@ const notificationSchema = new mongoose.Schema({
     unread: {type: Number},
     notifications: {type: Array}
 })
-
-studentSchema.pre('validate', function (next){
-    bcrypt.hash(this.password, Number(process.env.PASSWORDSALTING))
-    .then((hashedPassword)=>{
-        this.password = hashedPassword
-        console.log(this.password);
-        next()
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-})
-
-studentSchema.methods.validatePassword = function(password, callback){
-    bcrypt.compare(password, this.password, (error, same)=>{
-        if (!error) {
-            callback(error, same)
-            console.log(same)
-        } else{
-            next()
-        }
-    })
-    
-}
 
 const jssonestudent = mongoose.model(`jssonestudents`, studentSchema)
 const jsstwostudent = mongoose.model(`jsstwostudents`, studentSchema)
