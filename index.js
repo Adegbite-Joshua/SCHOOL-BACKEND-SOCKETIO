@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const { socketSendMessage, sendNotification } = require('./controller/socket.controller');
 require('dotenv').config();
 
 
@@ -88,5 +89,5 @@ io.on('connection', (socket)=>{
 
 
 server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port: ${PORT}`);
 });
