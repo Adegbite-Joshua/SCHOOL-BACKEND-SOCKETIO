@@ -1,7 +1,6 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const { default: axios } = require('axios');
 require('dotenv').config();
 
 
@@ -42,8 +41,28 @@ io.on('connection', (socket) => {
                 type: 'message'
             }, partnerId
         };
-        axios.post('https://hopeacademybackend.vercel.app/send_message', messageDetails)
-        axios.post('https://hopeacademybackend.vercel.app/send_notification', notificationBody)
+        fetch('https://hopeacademybackend.vercel.app/send_message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(messageDetails),
+        })
+            .then(response => response.json())
+            .then(data => {})
+            .catch(error => {console.error('Error sending message:', error);});
+
+        fetch('https://hopeacademybackend.vercel.app/send_notification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(notificationBody),
+        })
+            .then(response => response.json())
+            .then(data => {})
+            .catch(error => {console.error('Error sending notification:', error);});
+
         console.log(onlineUsers)
         const user = onlineUsers.find((user) => user.mongoDbId === partnerId)
         if (user) {
@@ -90,14 +109,6 @@ io.on('connection', (socket) => {
         onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
     })
 })
-
-mongoose.connect(URI)
-    .then((res) => {
-        console.log('connected');
-    })
-    .catch((err) => {
-        console.log(err);
-    })
 
 
 server.listen(PORT, () => {
