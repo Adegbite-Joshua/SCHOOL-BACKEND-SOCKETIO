@@ -10,10 +10,10 @@
   "author": "Adegbite Joshua",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
-    "mongoose": "^8.0.3",
     "socket.io": "^4.7.2"
   },
   "devDependencies": {
