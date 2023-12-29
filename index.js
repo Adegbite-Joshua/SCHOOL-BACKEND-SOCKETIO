@@ -1,19 +1,21 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const cors = require('cors');
 require('dotenv').config();
 
-
 const app = express();
+app.use(cors());
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: '*',
+        origin: '*'
     },
 });
 
+
 const PORT = process.env.PORT1;
-const URI = process.env.URI
 
 let onlineUsers = [];
 
@@ -32,37 +34,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('sendMessage', (messageDetails, partnerId) => {
-        let notificationBody = {
-            message: {
-                senderId: messageDetails.senderId,
-                message: messageDetails.message.slice(0, 15),
-                date: new Date(),
-                name: messageDetails.senderName,
-                type: 'message'
-            }, partnerId
-        };
-        fetch('https://hopeacademybackend.vercel.app/send_message', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(messageDetails),
-        })
-            .then(response => response.json())
-            .then(data => {})
-            .catch(error => {console.error('Error sending message:', error);});
-
-        fetch('https://hopeacademybackend.vercel.app/send_notification', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(notificationBody),
-        })
-            .then(response => response.json())
-            .then(data => {})
-            .catch(error => {console.error('Error sending notification:', error);});
-
         console.log(onlineUsers)
         const user = onlineUsers.find((user) => user.mongoDbId === partnerId)
         if (user) {
