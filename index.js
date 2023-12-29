@@ -1,23 +1,19 @@
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const cors = require('cors');
+const { createServer } = require('http');
+const { Server } = require("socket.io");
+const httpServer = createServer();
 require('dotenv').config();
 
-const app = express();
-app.use(cors());
 
-const server = http.createServer(app);
-const io = new Server(server, {
+const PORT = process.env.PORT;
+const io = new Server(httpServer, {
     cors: {
-        origin: '*'
+        origin: "*",
+        methods: ["GET", "POST"]
     },
 });
 
-
-const PORT = process.env.PORT1;
-
 let onlineUsers = [];
+
 
 const addUserId = (mongoDbId, socketId) => {
     mongoDbId != null && !onlineUsers.some((user) => user.mongoDbId == mongoDbId) && onlineUsers.push({
@@ -81,7 +77,4 @@ io.on('connection', (socket) => {
     })
 })
 
-
-server.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
-});
+httpServer.listen(PORT);
